@@ -30,6 +30,123 @@ player = Player(world.starting_room)
 traversal_path = []
 
 
+old_room_id = player.current_room.id
+# old rooom set to none
+# gets current room
+new_room = player.current_room.id
+
+rooms = {}
+# create a dict
+room_dict = {}
+
+current_rooms = player.current_room.get_exits()
+for room in current_rooms:
+    room_dict[room] = "?"
+
+rooms[new_room] = room_dict
+
+room_to_explore = random.choice(current_rooms)
+
+q = []
+
+q.append(room_to_explore)
+
+# print(rooms)
+
+directions = {"n":"s","s":"n","e":"w","w":"e"}
+
+visited = set()
+
+visited.add(new_room)
+
+while len(visited) < 500:
+
+    player.travel(room_to_explore)
+    # q.append(room_to_explore)
+
+    traversal_path.append(room_to_explore)
+
+    new_room = player.current_room.id
+    
+    visited.add(new_room)
+
+    # updates old rooms
+    # print(new_room)
+    old_room_dict = rooms[old_room_id]
+    old_room_dict[room_to_explore] = new_room
+    rooms[old_room_id] = old_room_dict
+
+    # print(f"{old_room_id} : {rooms[old_room_id]}")
+    # print(q)
+
+    # update old rooms id
+    # rooms[old_room_id][room_to_explore] = new_room
+
+    if new_room in rooms:
+
+        # update room on id
+        # rooms[new_room][directions[room_to_explore]] = old_room_id
+
+        room_dict = rooms[new_room]
+        pass
+        room_dict[directions[room_to_explore]] = old_room_id
+    else:
+        # create the new dict for new room and updates
+        room_dict = {}
+        
+        for room in player.current_room.get_exits():
+            if room == directions[room_to_explore]:
+
+                room_dict[directions[room_to_explore]] = old_room_id
+            else:
+                room_dict[room] = "?"
+    # updates new rooms dict
+    rooms[new_room] = room_dict
+    
+    
+    # get new room dict directions that are not explored
+    current_rooms = [key for key,value in room_dict.items() if value == "?"]
+
+    old_room_id = player.current_room.id 
+    # traverse back
+    if len(current_rooms) < 1:
+        room_explored = q.pop()
+        room_to_explore = directions[room_explored]
+        
+    else:
+        room_to_explore = random.choice(current_rooms)
+        q.append(room_to_explore)
+    
+# read or 
+
+    # gets rooms for current room {'n','e','s','w'}
+# create new rooms dict
+    # gets rooms for current room ['n','e','s','w']
+    # creates dict with directions
+# if there is old_room_id update current rooms by reading last direction in queue
+# gets rooms that are not explored and shuffles them
+# travels direction that is choosen
+# add direction to queue
+# get new room id
+# updates old room dict
+    # current_room[directin] = new_room id
+
+
+# assigns new_room to old_room_id
+
+'''
+search for an unexplored room
+
+get current rooms in a dict n , e , s , w
+
+place the room explored in the bfs queue
+
+n [0] 
+
+loop over 
+
+'''
+
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
